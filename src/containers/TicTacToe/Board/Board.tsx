@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Players, SquareStates } from "../typedefs";
+import { T_Board, SquareStates, Winners } from "../typedefs";
 import Square from "./Square/Square";
 
 import "./Board.scss";
 
 export interface BoardProps {
-  squares: Array<Players | SquareStates>;
+  squares: T_Board;
   winner: string;
   onMove: (squareId: number) => void;
 }
@@ -81,8 +81,8 @@ Board.propTypes = {
 };
 
 Board.defaultProps = {
-  squares: Array(9).fill(""),
-  winner: "",
+  squares: Array(9).fill(SquareStates.EMPTY),
+  winner: Winners.EMPTY,
   onMove: () => {}
 };
 
