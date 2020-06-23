@@ -14,6 +14,7 @@ import {
   SquareStates,
   T_Board
 } from "./typedefs";
+import GameControls from "./GameControls/GameControls";
 
 const initialTurn: Turn = {
   player: Players.X,
@@ -78,6 +79,25 @@ function TicTacToe() {
   const [winner, setWinner] = useState(initialWinner);
   const [gameHistory, setGameHistory] = useState(initialGameHistory);
 
+  /**
+   * Change turns after current move was saved to history
+   */
+  useEffect(() => {
+    if (history.length > 0) {
+      const board = history[history.length - 1].board.slice();
+      const newWinner = establishWinner(board, history.length);
+      setTurn((prevTurn) => ({
+        player: prevTurn.player === Players.X ? Players.O : Players.X,
+        board: board
+      }));
+      if (newWinner.player !== Winners.EMPTY) {
+        setWinner(newWinner);
+      }
+    } else {
+      setTurn(initialTurn);
+    }
+  }, [history]);
+
   useEffect(() => {
     if (winner.player !== Winners.EMPTY) {
       setGameHistory((prevHistory) => {
@@ -103,23 +123,6 @@ function TicTacToe() {
     }
   }, [winner, history]);
 
-  /**
-   * Change turns after current move was saved to history
-   */
-  useEffect(() => {
-    if (history.length > 0) {
-      const board = history[history.length - 1].board.slice();
-      const newWinner = establishWinner(board, history.length);
-      setTurn((prevTurn) => ({
-        player: prevTurn.player === Players.X ? Players.O : Players.X,
-        board: board
-      }));
-      if (newWinner.player !== Winners.EMPTY) {
-        setWinner(newWinner);
-      }
-    }
-  }, [history]);
-
   const playerMoved = (id: number) => {
     if (
       turn.board[id] === SquareStates.EMPTY &&
@@ -136,6 +139,17 @@ function TicTacToe() {
     }
   };
 
+  const undoMove = () => {
+    if (history.length > 0) {
+      setHistory(history.slice(0, -1));
+    }
+  };
+
+  const startNewGame = () => {
+    setWinner(initialWinner);
+    setHistory(initialHistory);
+  };
+
   return (
     <div className="tic-tac-toe-game">
       <ScoreBoard
@@ -149,10 +163,12 @@ function TicTacToe() {
         onMove={playerMoved}
       />
       <GameStatus player={turn.player} />
-      <div>
-        <button onClick={(e) => {}}>Undo move</button>
-        <button onClick={(e) => {}}>New game</button>
-      </div>
+      <GameControls
+        undoDisabled={winner.player !== Winners.EMPTY || history.length < 1}
+        newGameDisabled={history.length === 0}
+        onUndoMove={undoMove}
+        onNewGame={startNewGame}
+      />
     </div>
   );
 }
