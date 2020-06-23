@@ -1,0 +1,16 @@
+@import "../variables.scss";
+
+.game-status {
+  margin: 0 auto;
+  padding: 1em 0;
+  max-width: $board-size;
+  width: 100%;
+}
+
+.player-x {
+  color: $player-x-color;
+}
+
+.player-o {
+  color: $player-o-color;
+}

@@ -1,0 +1,38 @@
+@import "../variables.scss";
+
+.score-board {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 auto;
+  max-width: $board-size;
+  width: 100%;
+}
+
+.score-board__column {
+  text-align: center;
+  flex: 1 0 0;
+  padding: 0 0 1em 0;
+}
+
+.score-board__column-x {
+  color: $player-x-color;
+}
+
+.score-board__column-o {
+  color: $player-o-color;
+}
+
+.score-board__column-no-win {
+  color: $no-win-color;
+}
+
+.score-board__column > strong {
+  font-weight: 700;
+}
+
+.score-board__header {
+  font-weight: 700;
+  flex: 3 0px 100%;
+  padding: 1em 0;
+  width: 100%;
+}

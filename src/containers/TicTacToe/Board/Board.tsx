@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import Square from "./Square/Square";
 
+import "./Board.scss";
+
 export interface BoardProps {
   squares: Array<string>;
   winner: string;
