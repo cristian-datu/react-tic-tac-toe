@@ -4,7 +4,7 @@
 
 Recreating the Tic-Tac-Toe game to practice React coding skills (including, but not limited to using typescript, prop-types, node-sass, jest and enzyme).
 
-Currently, it only works for one game at a time. Planned features include the addition of "new game" and "undo move" functionality, games history and replay (drawing all steps for given game from recorded history)
+Planned features include the addition of games history and replay (drawing all steps for given game from recorded history) functionality
 
 ## Usage
 
