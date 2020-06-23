@@ -21,15 +21,15 @@
   padding: 0.5em 0.75em;
   transition: all 0.2s ease-in-out;
   transition-property: background-color, border-color, color;
-}
 
-.game-controls__btn:disabled {
-  cursor: not-allowed;
-  border-color: lighten($main-foreground-color, 75%);
-  color: lighten($main-foreground-color, 75%);
-}
+  &:disabled {
+    cursor: not-allowed;
+    border-color: lighten($main-foreground-color, 75%);
+    color: lighten($main-foreground-color, 75%);
+  }
 
-.game-controls__btn:not(:disabled):hover {
-  background-color: $main-foreground-color;
-  color: $main-background-color;
+  &:not(:disabled):hover {
+    background-color: $main-foreground-color;
+    color: $main-background-color;
+  }
 }
