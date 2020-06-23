@@ -17,7 +17,8 @@ export enum SquareStates {
 }
 
 export type T_Winners = Players | SquareStates.X | SquareStates.O | Winners;
-export type T_Board = Array<Players | SquareStates>;
+export type T_SquareState = Players | SquareStates;
+export type T_Board = Array<T_SquareState>;
 
 export interface I_Turn {
   player: Players;

@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./Square.scss";
-import { Players, SquareStates } from "../../typedefs";
+import { SquareStates, T_SquareState } from "../../typedefs";
 
 export interface SquareProps {
   id: string;
-  value: Players | SquareStates;
+  value: T_SquareState;
   onClick: (e: React.SyntheticEvent<Element, Event>) => void;
 }
 
@@ -16,7 +16,7 @@ function Square({ id, value, onClick }: SquareProps) {
   const classes = ["board-square", "board-square-" + id.toLocaleLowerCase()];
 
   const clickHandler = (e: React.SyntheticEvent) => {
-    if (!value) {
+    if (value === SquareStates.EMPTY) {
       onClick(e);
     }
   };
