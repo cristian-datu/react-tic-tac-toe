@@ -1,0 +1,15 @@
+@import "../variables.scss";
+
+.board {
+  border: $board-border;
+  border-bottom: none;
+  border-right: none;
+  box-sizing: inherit;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  max-width: $board-size;
+  width: 100%;
+  user-select: none;
+}

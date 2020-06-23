@@ -1,0 +1,68 @@
+@import "../../variables.scss";
+
+.board-square {
+  border: $board-border;
+  border-top: none;
+  border-left: none;
+  box-sizing: inherit;
+  color: $main-foreground-color;
+  font-size: $board-square-font-size;
+  font-weight: 400;
+  line-height: $board-square-size;
+  text-align: center;
+  flex: 1 0 33.333%;
+  min-height: $board-square-size;
+  transition: all 0.2s ease-in-out;
+  transition-property: background-color, color;
+}
+
+.board-square__empty {
+  cursor: pointer;
+}
+
+.board-square__x {
+  color: $player-x-color;
+}
+
+.board-square__o {
+  color: $player-o-color;
+}
+
+.board-has-winner .board-square,
+.board-square__used {
+  cursor: not-allowed;
+}
+
+.board-has-winner .board-square,
+.board-no-win .board-square {
+  background-color: $losing-background-color;
+  color: $losing-foreground-color;
+}
+
+.board-012 .board-square-0,
+.board-012 .board-square-1,
+.board-012 .board-square-1,
+.board-345 .board-square-3,
+.board-345 .board-square-4,
+.board-345 .board-square-5,
+.board-678 .board-square-6,
+.board-678 .board-square-7,
+.board-678 .board-square-8,
+.board-036 .board-square-0,
+.board-036 .board-square-3,
+.board-036 .board-square-6,
+.board-147 .board-square-1,
+.board-147 .board-square-4,
+.board-147 .board-square-7,
+.board-258 .board-square-2,
+.board-258 .board-square-5,
+.board-258 .board-square-5,
+.board-048 .board-square-0,
+.board-048 .board-square-4,
+.board-048 .board-square-8,
+.board-246 .board-square-2,
+.board-246 .board-square-4,
+.board-246 .board-square-6 {
+  background: $winning-background-color;
+  color: $winning-foreground-color;
+}

@@ -1,0 +1,23 @@
+// Main colors
+
+$main-background-color: #ffffff !default;
+$main-foreground-color: #000000 !default;
+
+// Game state colors
+
+$player-x-color: #ff6666 !default;
+$player-o-color: #6666ff !default;
+$no-win-color: #666666 !default;
+
+$winning-background-color: #99ff99 !default;
+$winning-foreground-color: #ff5555 !default;
+
+$losing-background-color: #ffffff;
+$losing-foreground-color: #eeeeee;
+
+// Board size
+
+$board-size: 300px !default;
+$board-border: 1px solid $main-foreground-color !default;
+$board-square-size: ($board-size / 3);
+$board-square-font-size: ($board-square-size * 0.75) !default;
