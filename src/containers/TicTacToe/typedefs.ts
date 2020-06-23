@@ -19,21 +19,21 @@ export enum SquareStates {
 export type T_Winners = Players | SquareStates.X | SquareStates.O | Winners;
 export type T_Board = Array<Players | SquareStates>;
 
-export interface Turn {
+export interface I_Turn {
   player: Players;
   board: T_Board;
 }
 
-export type T_MatchHistory = Array<Turn>;
+export type T_MatchHistory = Array<I_Turn>;
 
-export interface GameHistory {
+export interface I_GameHistory {
   x: number;
   o: number;
   noWin: number;
   games: Array<T_MatchHistory>;
 }
 
-export interface CurrentGameWinner {
+export interface I_CurrentGameWinner {
   player: T_Winners;
   squares: string;
 }

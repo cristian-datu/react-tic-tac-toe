@@ -7,28 +7,28 @@ import GameStatus from "./GameStatus/GameStatus";
 import {
   Players,
   Winners,
-  Turn,
-  CurrentGameWinner,
-  GameHistory,
+  I_Turn,
+  I_CurrentGameWinner,
+  I_GameHistory,
   T_MatchHistory,
   SquareStates,
   T_Board
 } from "./typedefs";
 import GameControls from "./GameControls/GameControls";
 
-const initialTurn: Turn = {
+const initialTurn: I_Turn = {
   player: Players.X,
   board: Array(9).fill(SquareStates.EMPTY)
 };
 
 const initialHistory: T_MatchHistory = [];
 
-const initialWinner: CurrentGameWinner = {
+const initialWinner: I_CurrentGameWinner = {
   player: Winners.EMPTY,
   squares: ""
 };
 
-const initialGameHistory: GameHistory = {
+const initialGameHistory: I_GameHistory = {
   x: 0,
   o: 0,
   noWin: 0,
@@ -39,7 +39,10 @@ const initialGameHistory: GameHistory = {
  * Check if there is a winner combination on the board
  * @param board Array<string>
  */
-const establishWinner = (board: T_Board, moves: number): CurrentGameWinner => {
+const establishWinner = (
+  board: T_Board,
+  moves: number
+): I_CurrentGameWinner => {
   const combinations = [
     [0, 1, 2],
     [3, 4, 5],
