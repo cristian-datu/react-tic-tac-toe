@@ -3,4 +3,5 @@
 .tic-tac-toe-game {
   background: $main-background-color;
   box-sizing: border-box;
+  user-select: none;
 }
