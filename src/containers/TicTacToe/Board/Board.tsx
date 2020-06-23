@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { Players, SquareStates } from "../typedefs";
 import Square from "./Square/Square";
 
 import "./Board.scss";
 
 export interface BoardProps {
-  squares: Array<string>;
+  squares: Array<Players | SquareStates>;
   winner: string;
   onMove: (squareId: number) => void;
 }
@@ -48,9 +49,9 @@ Board.propTypes = {
     propFullName
   ) {
     if (
-      propValue[key] !== null &&
-      propValue[key] !== "X" &&
-      propValue[key] !== "O"
+      propValue[key] !== SquareStates.EMPTY &&
+      propValue[key] !== SquareStates.X &&
+      propValue[key] !== SquareStates.O
     ) {
       return new Error(
         "Invalid prop `" +
@@ -80,7 +81,7 @@ Board.propTypes = {
 };
 
 Board.defaultProps = {
-  squares: Array(9).fill(null),
+  squares: Array(9).fill(""),
   winner: "",
   onMove: () => {}
 };

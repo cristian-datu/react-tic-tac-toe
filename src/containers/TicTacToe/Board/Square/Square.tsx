@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./Square.scss";
+import { Players, SquareStates } from "../../typedefs";
 
 export interface SquareProps {
   id: string;
-  value: string | null;
+  value: Players | SquareStates;
   onClick: (e: React.SyntheticEvent<Element, Event>) => void;
 }
 
@@ -20,8 +21,8 @@ function Square({ id, value, onClick }: SquareProps) {
     }
   };
 
-  if (value !== "X" && value !== "O") {
-    displayValue = " ";
+  if (value !== SquareStates.X && value !== SquareStates.O) {
+    displayValue = SquareStates.EMPTY;
     classes.push("board-square__empty");
   } else {
     classes.push("board-square__used");
@@ -37,12 +38,13 @@ function Square({ id, value, onClick }: SquareProps) {
 
 Square.propTypes = {
   id: PropTypes.string,
-  value: PropTypes.oneOf([null, "X", "O"]),
+  value: PropTypes.oneOf([SquareStates.EMPTY, SquareStates.X, SquareStates.O]),
   onClick: PropTypes.func.isRequired
 };
 
 Square.defaultProps = {
-  id: ""
+  id: "",
+  value: SquareStates.EMPTY
 };
 
 export default Square;

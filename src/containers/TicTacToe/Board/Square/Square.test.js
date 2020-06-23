@@ -11,9 +11,9 @@ describe("<Square />", () => {
   });
 
   it("Renders one empty Square component", () => {
-    const component = shallow(<Square value={null} onClick={mockOnClick} />);
+    const component = shallow(<Square value="" onClick={mockOnClick} />);
     expect(component).toHaveLength(1);
-    expect(component.text()).toBe(" ");
+    expect(component.text()).toBe("");
   });
 
   it("Renders 'X' move", () => {
@@ -27,7 +27,7 @@ describe("<Square />", () => {
   });
 
   it("Triggers onClick if value is null", () => {
-    const component = shallow(<Square value={null} onClick={mockOnClick} />);
+    const component = shallow(<Square value="" onClick={mockOnClick} />);
     component.find("div").simulate("click");
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });

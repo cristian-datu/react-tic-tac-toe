@@ -4,30 +4,72 @@ import "./TicTacToe.scss";
 import ScoreBoard from "./ScoreBoard/ScoreBoard";
 import GameStatus from "./GameStatus/GameStatus";
 
-const initialTurn = {
-  player: "",
-  board: Array(9).fill(null)
+import {
+  Players,
+  Winners,
+  Turn,
+  CurrentGameWinner,
+  GameHistory,
+  T_MatchHistory,
+  SquareStates,
+  T_Board
+} from "./typedefs";
+
+const initialTurn: Turn = {
+  player: Players.X,
+  board: Array(9).fill(SquareStates.EMPTY)
 };
 
-const initialHistory = [initialTurn];
+const initialHistory: T_MatchHistory = [];
 
-const initialWinner = {
-  player: "",
+const initialWinner: CurrentGameWinner = {
+  player: Winners.EMPTY,
   squares: ""
 };
-
-interface GameHistory {
-  x: number;
-  o: number;
-  noWin: number;
-  games: Array<typeof initialHistory>;
-}
 
 const initialGameHistory: GameHistory = {
   x: 0,
   o: 0,
   noWin: 0,
   games: []
+};
+
+/**
+ * Check if there is a winner combination on the board
+ * @param board Array<string>
+ */
+const establishWinner = (board: T_Board, moves: number): CurrentGameWinner => {
+  const combinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for (let i = 0; i < combinations.length; i++) {
+    const [k1, k2, k3] = combinations[i];
+    const v1 = board[k1];
+    const v2 = board[k2];
+    const v3 = board[k3];
+    if (v1 && v1 === v2 && v1 === v3) {
+      return {
+        player: v1,
+        squares: [k1, k2, k3].join("")
+      };
+    }
+  }
+  if (moves >= board.length) {
+    return {
+      player: Winners.NO_WIN,
+      squares: Winners.NO_WIN
+    };
+  } else {
+    return initialWinner;
+  }
 };
 
 function TicTacToe() {
@@ -37,92 +79,54 @@ function TicTacToe() {
   const [gameHistory, setGameHistory] = useState(initialGameHistory);
 
   useEffect(() => {
-    setGameHistory((prevHistory) => {
-      const newState = Object.assign({}, prevHistory);
-      if (winner.player) {
-        switch (winner.player) {
-          case "X":
-            newState.x++;
-            break;
-          case "O":
-            newState.o++;
-            break;
-          case "no-win":
-            newState.noWin++;
-            break;
-          default:
-            break;
+    if (winner.player !== Winners.EMPTY) {
+      setGameHistory((prevHistory) => {
+        const newState = Object.assign({}, prevHistory);
+        if (winner.player) {
+          switch (winner.player) {
+            case Winners.X:
+              newState.x++;
+              break;
+            case Winners.O:
+              newState.o++;
+              break;
+            case Winners.NO_WIN:
+              newState.noWin++;
+              break;
+            default:
+              break;
+          }
+          newState.games.push(history.slice());
         }
-        newState.games.push(history.slice());
-      }
-      return newState;
-    });
-  }, [winner, history]);
-
-  /**
-   * Check for winning player on every move
-   */
-  useEffect(() => {
-    if (!establishWinner(turn.board)) {
-      // No winner, but all moves exhausted
-      if (history.length > 9) {
-        setWinner({
-          player: "no-win",
-          squares: "no-win"
-        });
-      }
+        return newState;
+      });
     }
-  }, [turn, history]);
+  }, [winner, history]);
 
   /**
    * Change turns after current move was saved to history
    */
   useEffect(() => {
     if (history.length > 0) {
+      const board = history[history.length - 1].board.slice();
+      const newWinner = establishWinner(board, history.length);
       setTurn((prevTurn) => ({
-        player: prevTurn.player === "X" ? "O" : "X",
-        board: history[history.length - 1].board.slice()
+        player: prevTurn.player === Players.X ? Players.O : Players.X,
+        board: board
       }));
+      if (newWinner.player !== Winners.EMPTY) {
+        setWinner(newWinner);
+      }
     }
   }, [history]);
 
-  /**
-   * Check if there is a winner combination on the board
-   * @param board Array<string>
-   */
-  const establishWinner = (board: Array<string>) => {
-    const combinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ];
-
-    for (let i = 0; i < combinations.length; i++) {
-      const first = board[combinations[i][0]];
-      const second = board[combinations[i][1]];
-      const third = board[combinations[i][2]];
-      if (first && first === second && first === third) {
-        setWinner({
-          player: first,
-          squares:
-            "" + combinations[i][0] + combinations[i][1] + combinations[i][2]
-        });
-        return true;
-      }
-    }
-    return false;
-  };
-
   const playerMoved = (id: number) => {
-    if (turn.board[id] === null && !winner.player) {
+    if (
+      turn.board[id] === SquareStates.EMPTY &&
+      winner.player === Winners.EMPTY
+    ) {
       const newTurn = Object.assign({}, turn);
       newTurn.board = turn.board.slice();
-      //newTurn.player = turn.player === "X" ? "O" : "X";
       newTurn.board[id] = newTurn.player;
       setHistory((prevHistory) => {
         const newState = prevHistory.slice();

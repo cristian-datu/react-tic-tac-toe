@@ -10,7 +10,7 @@ describe("<Board />", () => {
 
   beforeEach(() => {
     mockOnClick = jest.fn();
-    squares = Array(9).fill(null);
+    squares = Array(9).fill("");
   });
 
   it("Renders 9 squares", () => {

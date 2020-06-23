@@ -2,9 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./GameStatus.scss";
+import { Players } from "../typedefs";
 
 export interface GameStatusProps {
-  player: string;
+  player: Players;
 }
 
 function GameStatus({ player }: GameStatusProps) {
@@ -19,11 +20,11 @@ function GameStatus({ player }: GameStatusProps) {
 }
 
 GameStatus.propTypes = {
-  player: PropTypes.oneOf(["X", "O"])
+  player: PropTypes.oneOf([Players.X, Players.O])
 };
 
 GameStatus.defaultProps = {
-  player: "X"
+  player: Players.X
 };
 
 export default GameStatus;
