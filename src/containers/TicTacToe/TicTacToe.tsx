@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import {
   Players,
   Winners,
   SquareStates,
   I_TurnData,
-  I_MatchData,
-  I_Game
+  I_MatchData
 } from "./typedefs";
+
+import { GameHistoryContext } from "./GameHistoryContext/GameHistoryContext";
 
 import Board from "./Board/Board";
 import ScoreBoard from "./ScoreBoard/ScoreBoard";
@@ -25,13 +26,6 @@ const initialMatch: I_MatchData = {
   winner: Winners.EMPTY,
   squares: "",
   history: []
-};
-
-const Game: I_Game = {
-  x: 0,
-  o: 0,
-  noWin: 0,
-  games: []
 };
 
 /**
@@ -74,41 +68,16 @@ const establishWinner = (match: I_MatchData) => {
 };
 
 function TicTacToe() {
-  const [gameHistory, setGameHistory] = useState(Game);
+  const gameHistory = useContext(GameHistoryContext);
   const [match, setMatch] = useState(initialMatch);
+  const [gameSaved, setGameSaved] = useState(false);
 
-  // If match has a winner, save to history
   useEffect(() => {
-    if (match.winner !== Winners.EMPTY) {
-      setGameHistory((prevState) => {
-        const newState = Object.assign({}, prevState, {
-          games: prevState.games.slice()
-        });
-
-        switch (match.winner) {
-          case Winners.X:
-            newState.x++;
-            break;
-          case Winners.O:
-            newState.o++;
-            break;
-          case Winners.NO_WIN:
-            newState.noWin++;
-            break;
-          default:
-            break;
-        }
-
-        newState.games.push(
-          Object.assign({}, match, {
-            history: match.history.slice()
-          })
-        );
-
-        return newState;
-      });
+    if (match.winner !== Winners.EMPTY && !gameSaved) {
+      gameHistory.save(match);
+      setGameSaved(true);
     }
-  }, [match]);
+  }, [match, gameHistory, gameSaved]);
 
   // Display new move and establish winner
   const playerMoved = (id: number) => {
@@ -150,6 +119,7 @@ function TicTacToe() {
 
   // Start new game
   const startNewGame = () => {
+    setGameSaved(false);
     setMatch(initialMatch);
   };
 
@@ -170,9 +140,9 @@ function TicTacToe() {
   return (
     <div className="tic-tac-toe-game">
       <ScoreBoard
-        x={gameHistory.x}
-        o={gameHistory.o}
-        noWin={gameHistory.noWin}
+        x={gameHistory.winsX}
+        o={gameHistory.winsO}
+        noWin={gameHistory.noWins}
       />
       <Board winner={match.squares} squares={turn.board} onMove={playerMoved} />
       <GameStatus player={turn.player} />

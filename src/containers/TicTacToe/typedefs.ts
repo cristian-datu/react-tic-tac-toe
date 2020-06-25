@@ -32,8 +32,8 @@ export interface I_MatchData {
 }
 
 export interface I_Game {
-  x: number;
-  o: number;
-  noWin: number;
+  winsX: number;
+  winsO: number;
+  noWins: number;
   games: Array<I_MatchData>;
 }
