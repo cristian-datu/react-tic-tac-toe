@@ -6,13 +6,13 @@ import Square from "./Square/Square";
 
 import "./Board.scss";
 
-export interface BoardProps {
+type T_BoardProps = {
   squares: T_Board;
   winner: string;
   onMove: (squareId: number) => void;
-}
+};
 
-function Board({ squares, winner, onMove }: BoardProps) {
+function Board({ squares, winner, onMove }: T_BoardProps) {
   const handleClick = (e: React.SyntheticEvent, id: number) => {
     e.preventDefault();
     onMove(id);

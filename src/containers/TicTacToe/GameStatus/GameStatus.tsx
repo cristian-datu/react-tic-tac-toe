@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import "./GameStatus.scss";
 import { Players } from "../typedefs";
 
-export interface GameStatusProps {
+type T_GameStatusProps = {
   player: Players;
-}
+};
 
-function GameStatus({ player }: GameStatusProps) {
+function GameStatus({ player }: T_GameStatusProps) {
   return (
     <div className="game-status">
       Current Player:{" "}

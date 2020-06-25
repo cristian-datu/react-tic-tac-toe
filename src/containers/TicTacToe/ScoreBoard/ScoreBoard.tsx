@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 
 import "./ScoreBoard.scss";
 
-export interface ScoreBoardProps {
+type T_ScoreBoardProps = {
   x: number;
   o: number;
   noWin: number;
-}
+};
 
-function ScoreBoard({ x, o, noWin }: ScoreBoardProps) {
+function ScoreBoard({ x, o, noWin }: T_ScoreBoardProps) {
   return (
     <div className="score-board">
       <div className="score-board__column score-board__header">

@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 
 import "./GameControls.scss";
 
-export interface GameControlProps {
+type T_GameControlProps = {
   undoDisabled?: boolean;
   newGameDisabled?: boolean;
   onUndoMove: () => void;
   onNewGame: () => void;
-}
+};
 
 function GameControls({
   undoDisabled,
   newGameDisabled,
   onUndoMove,
   onNewGame
-}: GameControlProps) {
+}: T_GameControlProps) {
   const undoMoveHandle = (e: React.SyntheticEvent) => {
     e.preventDefault();
     onUndoMove();

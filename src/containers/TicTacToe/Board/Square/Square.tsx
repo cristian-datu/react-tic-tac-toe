@@ -4,13 +4,13 @@ import PropTypes from "prop-types";
 import "./Square.scss";
 import { SquareStates, T_SquareState } from "../../typedefs";
 
-export interface SquareProps {
+type T_SquareProps = {
   id: string;
   value: T_SquareState;
   onClick: (e: React.SyntheticEvent<Element, Event>) => void;
-}
+};
 
-function Square({ id, value, onClick }: SquareProps) {
+function Square({ id, value, onClick }: T_SquareProps) {
   let displayValue = value;
 
   const classes = ["board-square", "board-square-" + id.toLocaleLowerCase()];
