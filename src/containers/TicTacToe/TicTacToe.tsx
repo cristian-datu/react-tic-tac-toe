@@ -1,34 +1,33 @@
-import React, { useState, useEffect } from "react";
-import Board from "./Board/Board";
-import "./TicTacToe.scss";
-import ScoreBoard from "./ScoreBoard/ScoreBoard";
-import GameStatus from "./GameStatus/GameStatus";
+import React, { useEffect, useState } from "react";
 
 import {
   Players,
   Winners,
-  I_Turn,
-  I_CurrentGameWinner,
-  I_GameHistory,
-  T_MatchHistory,
   SquareStates,
-  T_Board
+  I_TurnData,
+  I_MatchData,
+  I_Game
 } from "./typedefs";
+
+import Board from "./Board/Board";
+import ScoreBoard from "./ScoreBoard/ScoreBoard";
+import GameStatus from "./GameStatus/GameStatus";
 import GameControls from "./GameControls/GameControls";
 
-const initialTurn: I_Turn = {
+import "./TicTacToe.scss";
+
+const initialTurn: I_TurnData = {
   player: Players.X,
   board: Array(9).fill(SquareStates.EMPTY)
 };
 
-const initialHistory: T_MatchHistory = [];
-
-const initialWinner: I_CurrentGameWinner = {
-  player: Winners.EMPTY,
-  squares: ""
+const initialMatch: I_MatchData = {
+  winner: Winners.EMPTY,
+  squares: "",
+  history: []
 };
 
-const initialGameHistory: I_GameHistory = {
+const Game: I_Game = {
   x: 0,
   o: 0,
   noWin: 0,
@@ -37,12 +36,9 @@ const initialGameHistory: I_GameHistory = {
 
 /**
  * Check if there is a winner combination on the board
- * @param board Array<string>
+ * @param match: I_MatchData
  */
-const establishWinner = (
-  board: T_Board,
-  moves: number
-): I_CurrentGameWinner => {
+const establishWinner = (match: I_MatchData) => {
   const combinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -54,104 +50,122 @@ const establishWinner = (
     [2, 4, 6]
   ];
 
-  for (let i = 0; i < combinations.length; i++) {
-    const [k1, k2, k3] = combinations[i];
-    const v1 = board[k1];
-    const v2 = board[k2];
-    const v3 = board[k3];
-    if (v1 && v1 === v2 && v1 === v3) {
-      return {
-        player: v1,
-        squares: [k1, k2, k3].join("")
-      };
+  if (match.history.length > 0) {
+    const board = match.history[match.history.length - 1].board;
+    for (let i = 0; i < combinations.length; i++) {
+      const [k1, k2, k3] = combinations[i];
+      const v1 = board[k1];
+      const v2 = board[k2];
+      const v3 = board[k3];
+      if (v1 && v1 === v2 && v1 === v3) {
+        match.winner = v1;
+        match.squares = [k1, k2, k3].join("");
+        break;
+      }
     }
-  }
-  if (moves >= board.length) {
-    return {
-      player: Winners.NO_WIN,
-      squares: Winners.NO_WIN
-    };
-  } else {
-    return initialWinner;
+    if (
+      match.winner === Winners.EMPTY &&
+      match.history.length >= board.length
+    ) {
+      match.winner = Winners.NO_WIN;
+      match.squares = Winners.NO_WIN;
+    }
   }
 };
 
 function TicTacToe() {
-  const [turn, setTurn] = useState(initialTurn);
-  const [history, setHistory] = useState(initialHistory);
-  const [winner, setWinner] = useState(initialWinner);
-  const [gameHistory, setGameHistory] = useState(initialGameHistory);
+  const [gameHistory, setGameHistory] = useState(Game);
+  const [match, setMatch] = useState(initialMatch);
 
-  /**
-   * Change turns after current move was saved to history
-   */
+  // If match has a winner, save to history
   useEffect(() => {
-    if (history.length > 0) {
-      const board = history[history.length - 1].board.slice();
-      const newWinner = establishWinner(board, history.length);
-      setTurn((prevTurn) => ({
-        player: prevTurn.player === Players.X ? Players.O : Players.X,
-        board: board
-      }));
-      if (newWinner.player !== Winners.EMPTY) {
-        setWinner(newWinner);
-      }
-    } else {
-      setTurn(initialTurn);
-    }
-  }, [history]);
+    if (match.winner !== Winners.EMPTY) {
+      setGameHistory((prevState) => {
+        const newState = Object.assign({}, prevState, {
+          games: prevState.games.slice()
+        });
 
-  useEffect(() => {
-    if (winner.player !== Winners.EMPTY) {
-      setGameHistory((prevHistory) => {
-        const newState = Object.assign({}, prevHistory);
-        if (winner.player) {
-          switch (winner.player) {
-            case Winners.X:
-              newState.x++;
-              break;
-            case Winners.O:
-              newState.o++;
-              break;
-            case Winners.NO_WIN:
-              newState.noWin++;
-              break;
-            default:
-              break;
-          }
-          newState.games.push(history.slice());
+        switch (match.winner) {
+          case Winners.X:
+            newState.x++;
+            break;
+          case Winners.O:
+            newState.o++;
+            break;
+          case Winners.NO_WIN:
+            newState.noWin++;
+            break;
+          default:
+            break;
         }
+
+        newState.games.push(
+          Object.assign({}, match, {
+            history: match.history.slice()
+          })
+        );
+
         return newState;
       });
     }
-  }, [winner, history]);
+  }, [match]);
 
+  // Display new move and establish winner
   const playerMoved = (id: number) => {
+    const lastTurn =
+      match.history.length > 0
+        ? match.history[match.history.length - 1]
+        : initialTurn;
+
     if (
-      turn.board[id] === SquareStates.EMPTY &&
-      winner.player === Winners.EMPTY
+      lastTurn.board[id] === SquareStates.EMPTY &&
+      match.winner === Winners.EMPTY
     ) {
-      const newTurn = Object.assign({}, turn);
-      newTurn.board = turn.board.slice();
-      newTurn.board[id] = newTurn.player;
-      setHistory((prevHistory) => {
-        const newState = prevHistory.slice();
-        newState.push(newTurn);
-        return newState;
+      setMatch((prevMatch) => {
+        const newTurn = Object.assign({}, lastTurn);
+        if (lastTurn !== initialTurn) {
+          newTurn.player =
+            lastTurn.player === Players.X ? Players.O : Players.X;
+        }
+        newTurn.board = lastTurn.board.slice();
+        newTurn.board[id] = newTurn.player;
+        let newMatch = Object.assign({}, prevMatch, {
+          history: prevMatch.history.slice()
+        });
+        newMatch.history.push(newTurn);
+        establishWinner(newMatch);
+        return newMatch;
       });
     }
   };
 
+  // Undo last move
   const undoMove = () => {
-    if (history.length > 0) {
-      setHistory(history.slice(0, -1));
+    if (match.history.length > 0 && match.winner === Winners.EMPTY) {
+      setMatch((prevMatch) =>
+        Object.assign({}, match, { history: match.history.slice(0, -1) })
+      );
     }
   };
 
+  // Start new game
   const startNewGame = () => {
-    setWinner(initialWinner);
-    setHistory(initialHistory);
+    setMatch(initialMatch);
   };
+
+  // Prepare turn data for rendering
+  const turn = Object.assign({}, initialTurn, {
+    board: initialTurn.board.slice()
+  });
+  if (match.history.length > 0) {
+    const prevTurn = match.history[match.history.length - 1];
+    turn.board = prevTurn.board;
+    if (match.winner === Winners.EMPTY) {
+      turn.player = prevTurn.player === Players.X ? Players.O : Players.X;
+    } else {
+      turn.player = prevTurn.player;
+    }
+  }
 
   return (
     <div className="tic-tac-toe-game">
@@ -160,15 +174,13 @@ function TicTacToe() {
         o={gameHistory.o}
         noWin={gameHistory.noWin}
       />
-      <Board
-        winner={winner.squares}
-        squares={turn.board}
-        onMove={playerMoved}
-      />
+      <Board winner={match.squares} squares={turn.board} onMove={playerMoved} />
       <GameStatus player={turn.player} />
       <GameControls
-        undoDisabled={winner.player !== Winners.EMPTY || history.length < 1}
-        newGameDisabled={history.length === 0}
+        undoDisabled={
+          match.winner !== Winners.EMPTY || match.history.length < 1
+        }
+        newGameDisabled={match.history.length === 0}
         onUndoMove={undoMove}
         onNewGame={startNewGame}
       />

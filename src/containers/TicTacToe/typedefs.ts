@@ -20,21 +20,20 @@ export type T_Winners = Players | SquareStates.X | SquareStates.O | Winners;
 export type T_SquareState = Players | SquareStates;
 export type T_Board = Array<T_SquareState>;
 
-export interface I_Turn {
+export interface I_TurnData {
   player: Players;
   board: T_Board;
 }
 
-export type T_MatchHistory = Array<I_Turn>;
+export interface I_MatchData {
+  winner: T_Winners;
+  squares: string;
+  history: Array<I_TurnData>;
+}
 
-export interface I_GameHistory {
+export interface I_Game {
   x: number;
   o: number;
   noWin: number;
-  games: Array<T_MatchHistory>;
-}
-
-export interface I_CurrentGameWinner {
-  player: T_Winners;
-  squares: string;
+  games: Array<I_MatchData>;
 }
