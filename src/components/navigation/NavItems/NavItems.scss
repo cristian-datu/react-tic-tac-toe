@@ -1,0 +1,9 @@
+.nav-items {
+  display: inline-flex;
+  list-style: none;
+  margin: auto;
+}
+
+.nav-items .nav-item {
+  flex: 1;
+}

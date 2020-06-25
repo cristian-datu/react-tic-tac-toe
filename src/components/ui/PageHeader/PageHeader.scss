@@ -1,0 +1,23 @@
+@import "../variables.scss";
+
+.page-header {
+  background: #eeeeee;
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  margin: 0 0 $section-gap 0;
+  padding: $page-padding;
+  width: 100%;
+}
+
+.page-header__logo {
+  font-weight: 700;
+  flex: 1;
+  display: block;
+}
+
+.page-header__nav {
+  text-align: right;
+  flex: 1;
+  display: block;
+}

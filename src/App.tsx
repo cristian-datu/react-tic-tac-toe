@@ -2,13 +2,13 @@ import React from "react";
 
 import "./assets/scss/app.scss";
 
-import { TicTacToe } from "./containers/TicTacToe";
 import { GameHistoryProvider } from "./containers/TicTacToe";
+import Router from "./containers/Router/Router";
 
 function App() {
   return (
     <GameHistoryProvider>
-      <TicTacToe />
+      <Router />
     </GameHistoryProvider>
   );
 }
