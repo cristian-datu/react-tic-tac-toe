@@ -1,0 +1,51 @@
+.game-history-item {
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 2px #eeeeee;
+  display: inline-block;
+  margin: 15px 15px 15px 0;
+  padding: 15px;
+}
+
+.game-history-item__header {
+  margin: 0 0 10px 0;
+}
+
+.game-history-item__main {
+  border: 1px solid #eeeeee;
+  border-left: none;
+  border-right: none;
+  margin: 10px 0;
+  padding: 10px 0;
+}
+
+.game-history-item__footer {
+  text-align: center;
+  margin: 10px 0 0 0;
+}
+
+.game-history-item__title {
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.game-history-item__stats {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.game-history-item__stats-label,
+.game-history-item__stats-value {
+  font-weight: 400;
+  text-align: left;
+  padding: 0.2em 0;
+  width: 50%;
+}
+
+.game-history-item__stats-value {
+  font-weight: 700;
+  text-align: right;
+}
