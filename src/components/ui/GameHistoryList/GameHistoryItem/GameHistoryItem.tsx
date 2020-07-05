@@ -2,14 +2,17 @@ import React from "react";
 import { I_MatchData, Winners } from "../../../../containers/TicTacToe";
 
 import "./GameHistoryItem.scss";
+import { Link } from "react-router-dom";
 
 type GameHistoryItemProps = {
+  id: number;
   matchNo: number;
-  match: I_MatchData;
+  game: I_MatchData;
+  url: string;
 };
 
-function GameHistoryItem({ matchNo, match }: GameHistoryItemProps) {
-  const { winner, history } = match;
+function GameHistoryItem({ id, matchNo, game, url }: GameHistoryItemProps) {
+  const { winner, history } = game;
   const winnerText = winner === Winners.NO_WIN ? "Draw" : winner;
   return (
     <article className="game-history-item">
@@ -25,13 +28,10 @@ function GameHistoryItem({ matchNo, match }: GameHistoryItemProps) {
         </dl>
       </main>
       <footer className="game-history-item__footer">
-        <button>Details</button>
+        <Link to={url} title="Details">
+          Details
+        </Link>
       </footer>
-      {/* <Board
-        winner={match.squares}
-        squares={match.history[match.history.length - 1].board}
-        onMove={() => {}}
-      /> */}
     </article>
   );
 }

@@ -2,8 +2,9 @@ import React, { useContext } from "react";
 import Layout from "../../Layout/Layout";
 import { GameHistoryContext } from "../../TicTacToe";
 import { GameHistoryList } from "../../../components/ui";
+import { RouteComponentProps } from "react-router-dom";
 
-function History() {
+function History({ match }: RouteComponentProps) {
   const history = useContext(GameHistoryContext);
   document.title = "History";
 
@@ -30,7 +31,7 @@ function History() {
           {noWins} inconclusive match{noWins > 1 && "es"}
         </p>
       )}
-      <GameHistoryList games={games} />
+      <GameHistoryList games={games} baseUrl={match.path} />
     </Layout>
   );
 }

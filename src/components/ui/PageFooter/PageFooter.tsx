@@ -10,6 +10,7 @@ function PageFooter() {
       {history.games.length} games played.
       {history.games.length > 0 && (
         <button
+          className="btn"
           onClick={(e) => {
             e.preventDefault();
             history.clearHistory();
