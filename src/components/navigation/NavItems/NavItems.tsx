@@ -9,7 +9,7 @@ function NavItems() {
       <NavItem exact href="/" title="Game">
         Game
       </NavItem>
-      <NavItem exact href="/history" title="History">
+      <NavItem href="/history" title="History">
         History
       </NavItem>
     </ul>
