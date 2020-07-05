@@ -4,8 +4,6 @@
 
 Recreating the Tic-Tac-Toe game to practice React coding skills (including, but not limited to using typescript, prop-types, node-sass, jest and enzyme).
 
-Planned features include the addition of games history and replay (drawing all steps for given game from recorded history) functionality
-
 ## Usage
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
